@@ -9,68 +9,144 @@
 
 task main()
 {
+	//Varibale declaration
+	short yesNo=0;
+	short yesNo2=0;
+
+	// Run in constant loop
 	while(true){
+		// If the right joystick (horizontal) is on
 		if(vexRT[Ch1] != 0){
+			//Set motors in same direction
 			bMotorReflected[mot1] = true;
 			bMotorReflected[mot2] = true;
 
+			//Set motor speeds
 			motor[mot1] = vexRT[Ch1];
 			motor[mot2] = vexRT[Ch1];
 			motor[mot3] = vexRT[Ch1];
 			motor[mot4] = vexRT[Ch1];
 
+			//Set motors to running
+			yesNo=1;
+		}
+		else{
+			//Set motors to not running
+			yesNo=0;
+		}
+
+		//If left joystick is on (any axis)
+		if (vexRT[Ch3]>20 || vexRT[Ch4]>20 || vexRT[Ch3]<-20 || vexRT[Ch4]<-20){
+			//Set motor directions to parallel
+			bMotorReflected[mot1] = false;
+			bMotorReflected[mot2] = false;
+
+			//Set motor speeds
+			motor[mot1] = vexRT[Ch3];
+			motor[mot2] = vexRT[Ch4] -10;
+			motor[mot3] = vexRT[Ch3];
+			motor[mot4] = vexRT[Ch4];
+
+			//No motors running
+			}else if (yesNo==0){
+			//Set motor speeds to 0
+			motor[mot1] = 0;
+			motor[mot2] = 0;
+			motor[mot3] = 0;
+			motor[mot4] = 0;
+		}
+
+		//Check if button has been clicked (right up and down)
+		if(vexRT[Btn8U] != 0 || vexRT[Btn8D] != 0){
+			//If right down
+			if(vexRT[Btn8D] != 0)
+				bMotorReflected[mot5] = true;
+			else //Right up
+				bMotorReflected[mot5]= false;
+			motor[mot5] = 100; //Set motor speed
+		}
+		else{
+			//Right down
+			if(vexRT[Btn8D] != 0)
+				bMotorReflected[mot5] = true;
+			else //Right up
+				bMotorReflected[mot5]= false;
+			motor[mot5] = 20; //Set motor speed
+		}
+
+		//Check if button has been clicked (left or right)
+		if(vexRT[Btn8R] != 0 || vexRT[Btn8L] != 0){
+			if(vexRT[Btn8L] != 0) //If left clicked
+				bMotorReflected[mot6] = true;
+			else //If right clicked
+				bMotorReflected[mot6]= false;
+			motor[mot6] = 50; //Set motor speed
 			}else{
-			if (vexRT[Ch1]>20 || vexRT[Ch2]>20 ||vexRT[Ch3]>20||vexRT[Ch4]>20 || vexRT[Ch1]<-20 || vexRT[Ch2]<-20 ||vexRT[Ch3]<-20||vexRT[Ch4]<-20){
-				bMotorReflected[mot1] = false;
-				bMotorReflected[mot2] = false;
-				motor[mot1] = vexRT[Ch3] -50;               
-				motor[mot2] = vexRT[Ch4];
-				motor[mot3] = vexRT[Ch3];
-				motor[mot4] = vexRT[Ch4];
-				}else{
-				motor[mot1] = 0;
-				motor[mot2] = 0;
-				motor[mot3] = 0;
-				motor[mot4] = 0;
+			motor[mot6] = 0; //Shut off motor
+		}
+
+		//Check if button has been clicked (left or right)
+		if(vexRT[Btn5U] != 0 || vexRT[Btn5D] != 0){
+			// Left button clicked
+			if(vexRT[Btn5U] != 0){
+				yesNo2=1;
+			}
+			//Right button clicked
+			else if (vexRT[Btn5D] != 0){
+				yesNo2=2;
 			}
 		}
 
-		if(vexRT[Btn8U] != 0 || vexRT[Btn8D] != 0){
-			if(vexRT[Btn8D] != 0)
-				bMotorReflected[mot5] = true;
-			else
-				bMotorReflected[mot5]= false;
-			motor[mot5] = 100;
+
+		if (yesNo2==1){
+			bMotorReflected[mot7] = true;
+			motor[mot7] = 40;
+		}
+		else if (yesNo2==2){
+			bMotorReflected[mot7]= false;
+			motor[mot7] = 40;
 		}
 		else{
-			if(vexRT[Btn8D] != 0)
-				bMotorReflected[mot5] = true;
-			else
-				bMotorReflected[mot5]= false;
-			motor[mot5] = 20;
-		}
-
-		
-		if(vexRT[Btn8R] != 0 || vexRT[Btn8L] != 0){
-			if(vexRT[Btn8L] != 0)
-				bMotorReflected[mot6] = true;
-			else
-				bMotorReflected[mot6]= false;
-			motor[mot6] = 50;
-			}else{
-			motor[mot6] = 0;
-		}
-		
-		if(vexRT[Btn7R] != 0 || vexRT[Btn7L] != 0){
-			if(vexRT[Btn7L] != 0)
-				bMotorReflected[mot7] = true;
-			else
-				bMotorReflected[mot7]= false;
-			motor[mot7] = 25;
-			}else{
 			motor[mot7] = 0;
 		}
-	}
-	//	}
 
+
+		// Shoulder buttons:
+		// Claw grabbing:
+		// If down (open clicked)
+		if(vexRT[Btn7L] != 0 || vexRT[Btn7R] != 0){
+			// Left button clicked
+			if(vexRT[Btn7L] != 0){
+				bMotorReflected[mot7] = true;
+				motor[mot7] = 40;
+			}
+			//Right button clicked
+			else if (vexRT[Btn7R] != 0){
+				bMotorReflected[mot7]= false;
+				motor[mot7] = 40;
+			}
+		}
+
+		if(vexRT[Btn6U] != 0 || vexRT[Btn6D] != 0){
+			//If right down
+			if(vexRT[Btn6D] != 0){
+				bMotorReflected[mot5] = true;
+				motor[mot5] = 70; //Set motor speed
+				delay(200);
+				}else{ //Right up
+				bMotorReflected[mot5]= false;
+				motor[mot5] = 100; //Set motor speed
+				delay(400);
+			}
+		}
+		else{
+			//Right down
+			if(vexRT[Btn6D] != 0)
+				bMotorReflected[mot5] = true;
+			else //Right up
+				bMotorReflected[mot5]= false;
+			motor[mot5] = 20; //Set motor speed
+		}
+
+	}
 }

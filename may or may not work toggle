@@ -52,11 +52,11 @@ task main()
 			//bMotorReflected[mot5]= false;
 			//motor[mot5] = 100;
 		}
-		if(T1<100)			{																	// its supposed to go for 100 milliseconds
+		if(time1[T1]<100)			{																	// its supposed to go for 100 milliseconds
 			bMotorReflected[mot5] = true;
 			motor[mot5] = 100;
 		}
-		else if (T1<150){													// so crane stays in air
+		else if (time1[T1]<150){													// so crane stays in air
 			motor[mot5] = 20;
 		}
 		else if (vexRT[Btn7R] != 0 || vexRT[Btn7L] != 0){
@@ -86,7 +86,7 @@ task main()
 			//bMotorReflected[mot7]= false;
 			//motor[mot7] = 25;
 		}
-		if(T1<100)			{																	// its supposed to go for 100 milliseconds
+		if(time1[T2]<100)			{																	// its supposed to go for 100 milliseconds
 			bMotorReflected[mot5] = true;
 			motor[mot7] = 100;
 		}

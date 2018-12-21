@@ -1,3 +1,5 @@
+#pragma config(Sensor, dgtl2,  mot3sensor,     sensorQuadEncoder)
+#pragma config(Sensor, dgtl4,  mot1sensor,     sensorQuadEncoder)
 #pragma config(Motor,  port2,           mot1,          tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           mot2,          tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port4,           mot3,          tmotorVex393_MC29, openLoop, reversed)
@@ -11,10 +13,9 @@ task main()
 {
 	//Varibale declaration
 	short yesNo=0;
-	short yesNo2=0;
 
 	// Run in constant loop
-	while(true){
+	while(1){
 		// If the right joystick (horizontal) is on
 		if(vexRT[Ch1] != 0){
 			//Set motors in same direction
@@ -42,8 +43,8 @@ task main()
 			bMotorReflected[mot2] = false;
 
 			//Set motor speeds
-			motor[mot1] = vexRT[Ch3];
-			motor[mot2] = vexRT[Ch4] -10;
+			motor[mot1] = (((float)215)/255)*vexRT[Ch3];
+			motor[mot2] = vexRT[Ch4]; //(((float)205)/255)
 			motor[mot3] = vexRT[Ch3];
 			motor[mot4] = vexRT[Ch4];
 
@@ -89,42 +90,16 @@ task main()
 		if(vexRT[Btn5U] != 0 || vexRT[Btn5D] != 0){
 			// Left button clicked
 			if(vexRT[Btn5U] != 0){
-				yesNo2=1;
+				bMotorReflected[mot7] = true;
 			}
 			//Right button clicked
-			else if (vexRT[Btn5D] != 0){
-				yesNo2=2;
+			else {
+				bMotorReflected[mot7] = false;
 			}
-		}
-
-
-		if (yesNo2==1){
-			bMotorReflected[mot7] = true;
-			motor[mot7] = 40;
-		}
-		else if (yesNo2==2){
-			bMotorReflected[mot7]= false;
 			motor[mot7] = 40;
 		}
 		else{
 			motor[mot7] = 0;
-		}
-
-
-		// Shoulder buttons:
-		// Claw grabbing:
-		// If down (open clicked)
-		if(vexRT[Btn7L] != 0 || vexRT[Btn7R] != 0){
-			// Left button clicked
-			if(vexRT[Btn7L] != 0){
-				bMotorReflected[mot7] = true;
-				motor[mot7] = 40;
-			}
-			//Right button clicked
-			else if (vexRT[Btn7R] != 0){
-				bMotorReflected[mot7]= false;
-				motor[mot7] = 40;
-			}
 		}
 
 		if(vexRT[Btn6U] != 0 || vexRT[Btn6D] != 0){
@@ -147,6 +122,53 @@ task main()
 				bMotorReflected[mot5]= false;
 			motor[mot5] = 20; //Set motor speed
 		}
-
 	}
+
+
+
+
+
+
+	//signed long value1=0;
+	//signed long value3=0;
+	//clearDebugStream();
+	////wait1Msec(1000);
+	//// assume motor is on port 1
+	//bMotorReflected[mot1] = false;
+	//bMotorReflected[mot3] = true;
+	//motor[ mot1 ] = 250;
+	//motor[ mot3 ] = 210;
+	//// delay while motor accelerates
+	//wait1Msec( 500 );
+
+	//// clear encoder, enc should be the digital port that the encoder is on
+	//SensorValue[ mot1sensor ] = 0;
+	//SensorValue[mot3sensor] = 0;
+
+	//// wait for 1 second
+	//wait1Msec(1000);							// 0.08 is the constant of distance (cm) / encoder value
+	//														  // 47 cm/s
+	//value1 = -SensorValue[ mot1sensor ];
+	//value3 = SensorValue[ mot3sensor ];
+
+	//// stop motor
+	//motor[ mot1 ] = 0;
+	//motor[ mot3 ] = 0;
+
+	//// send to stdio
+	//writeDebugStreamLine("mot1 sensor value: %d", value1 );
+	//writeDebugStreamLine("mot3 sensor value: %d", value3 );
+
+	//while(1)
+	//	wait1Msec(10);
+	//while(1){
+	//	if(vexRT[Btn8U] != 0){
+	//		//Set motor speeds
+	//	  short speed = 250;
+	//		motor[mot1] = (((float)215)/255)*speed;
+	//		motor[mot3] = speed;
+	//		wait1Msec(500);
+	//		wait1Msec(3000);								// (180 cm - 30 cm) / 47 cm/s = 3.19
+	//	}
+	//}
 }
